@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="movie-search">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<title>Movie Search</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<link href="stylesheets/bootstrap.min.css" rel="stylesheet">
+		<!--[if lt IE 9]>
+			<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+		<link href="stylesheets/styles.css" rel="stylesheet">
+	</head>
+	<body ng-controller="appController">
+<nav class="navbar navbar-fixed-top header">
+  <div ng-show="progress" class="progress">
+    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+      <span class="sr-only">45% Complete</span>
+    </div>
+  </div>
+ 	<div class="col-md-12" >
+        <div class="navbar-header">
+          <a href="#" class="navbar-brand">Movie Search</a>
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse1">
+          <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+          </button>
+      
+        </div>
+        <div class="collapse navbar-collapse" id="navbar-collapse1">
+          <form class="navbar-form pull-left">
+              <div class="input-group" style="max-width:470px;">
+                <input ng-model="searchGeneral" type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term">
+                <div class="input-group-btn">
+                  <button ng-click="findGeneral()" class="btn btn-default btn-primary" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                </div>
+              </div>
+          </form>
+        </div>	
+     </div>	
+</nav>
+
+<!--main-->
+<div class="container" id="main">
+   <div class="row">
+  	<div class="col-md-12 col-sm-12">
+          <div class="well"> 
+            <button style="float:right" ng-click="refresh()" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+              <h4>Search</h4>
+                <ul class="nav nav-tabs">
+                  <li class="active"><a href="#A" data-toggle="tab">Actor</a></li>
+                  <li><a href="#B" data-toggle="tab">Movie Title</a></li>
+                  <li><a href="#C" data-toggle="tab">Year</a></li>
+                  <li><a href="#D" data-toggle="tab">Genre</a></li>
+                </ul>
+                <div class="tabbable">
+                  <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+                      <div class=" well-sm">
+                        <div class="input-group text-center">
+                          <input ng-model="searchActor" type="text" class="form-control input-lg" placeholder="Query">
+                          <span  class="input-group-btn"><button ng-click="findActor()" class="btn btn-lg btn-primary" type="button"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button></span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tab-pane" id="B">
+                      <div class=" well-sm">
+                        <div class="input-group text-center">
+                          <input ng-model="searchTitle" type="text" class="form-control input-lg" placeholder="Query">
+                          <span class="input-group-btn"><button ng-click="findTitle()" class="btn btn-lg btn-primary" type="button"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button></span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tab-pane" id="C">
+                      <div class=" well-sm">
+                        <div class="input-group text-center">
+                          <input ng-model="searchYear" type="text" class="form-control input-lg" placeholder="Query">
+                          <span class="input-group-btn"><button  ng-click="findYear()"  class="btn btn-lg btn-primary" type="button"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button></span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tab-pane" id="D">
+                      <div class=" well-sm">
+                        <div class="input-group text-center" style="width:100%">
+                          <div class="btn-group" style="width:100%">
+                            <button style="width:100%" class="btn btn-default btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              Choose Genre <span class="caret"></span>
+                            </button>
+                            <ul style="width:100%" class="dropdown-menu">
+                              <li class="dropdown-header">Choose a Genre</li>
+                             <li><a href="javascript:void(0)"  ng-click="setSelected('Animaciòn')">Animación</a></li>
+                              <li><a href="javascript:void(0)" ng-click="setSelected('Acciòn')">Acción</a></li>
+                              <li><a href="javascript:void(0)" ng-click="setSelected('Drama')">Drama</a></li>
+                              <li><a href="javascript:void(0)" ng-click="setSelected('Aventura')">Aventura</a></li>
+                              <li><a href="javascript:void(0)" ng-click="setSelected('Ciencia-Ficciòn')">Ciencia-Ficción</a></li>
+                              <li><a href="javascript:void(0)" ng-click="setSelected('Suspenso')" >Suspenso</a></li>
+                              <li><a href="javascript:void(0)" ng-click="setSelected('Romance')">Romance</a></li>
+                              <li><a href="javascript:void(0)" ng-click="setSelected('Terror')">Terror</a></li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div> <!-- /tabbable -->
+
+          </div>
+  	</div>
+        <div ng-show="notifyMessage"class="col-md-12">
+          <div class="alert alert-info alert-dismissable" ng-bind="notifyMessage">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+              
+          </div>
+        </div>    
+  </div><!--/row-->
+  
+  <hr>  
+	<div class="row">
+	   <div class="col-sm-4 col-xs-6" ng-repeat="movie in movieSet">
+        <div class="panel panel-default">
+          <div class="panel-thumbnail" ng-click="setSelectedMovie(movie)"><img ng-src="{{movie.image}}" class="img-responsive"></div>
+          <div class="panel-body content-movie">
+            <p class="lead">{{movie.title}} </p>
+            <p>{{movie.description.substring(0, 100)}}...</p>
+          </div>
+        </div>
+      </div><!--/col-->   
+
+  	</div>
+  
+</div><!--/main-->
+
+
+
+
+<!-- movie detail modal-->
+
+
+<div id="detailModal"  class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" style="width:80%;margin:auto;">
+  <div class="modal-content">
+      <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <h4 class="text-center">{{selectedMovie.title}}</h4>
+      </div>
+      <div class="modal-body">
+        <strong>Description: </strong><p>{{selectedMovie.description}}</p>
+        <strong>Main Actor: </strong><p>{{selectedMovie.author}}</p>
+        <strong>Year: </strong><p>{{selectedMovie.year}}</p>
+        <strong>Genre: </strong><p>{{selectedMovie.genre}}</p>
+      </div>
+      <div class="modal-footer">
+      </div>
+  </div>
+  </div>
+</div>
+
+
+
+	<!-- script references -->
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+		<script src="javascripts/bootstrap.min.js"></script>
+		<script src="javascripts/scripts.js"></script>
+    <script src="/bower_components/angular/angular.min.js"></script>
+    <script src="app/movie-search.js"></script>
+	</body>
+</html>
